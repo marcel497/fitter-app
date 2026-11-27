@@ -1,0 +1,28 @@
+{
+  "schema": 1,
+  "meta": {
+    "client": "Test Person",
+    "salutation": "ty",
+    "date": "2026-10-20",
+    "type": "road",
+    "bike_kind": "gravel",
+    "visit": "first",
+    "no_old": true,
+    "pedals_platform": true,
+    "bike": {
+      "model": { "v": "Example Gravel GRX", "s": "ok", "src": "db" },
+      "year": null,
+      "size": "M"
+    }
+  },
+  "old": {},
+  "new": {
+    "seat_tilt": { "v": 0, "s": "ok", "src": "dictated" },
+    "seat_height": { "v": 770, "s": "ok", "src": "dictated" },
+    "setback_center": { "v": 190, "s": "ok", "src": "dictated" },
+    "drop": { "v": 40, "s": "ok", "src": "dictated" },
+    "heel_wedges": { "v": "bez klínků", "s": "ok", "src": "default" },
+    "cockpit_type": { "v": "something odd", "s": "ok", "src": "db" }
+  },
+  "links": []
+}

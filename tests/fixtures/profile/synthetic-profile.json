@@ -1,0 +1,95 @@
+{
+  "format": "fitter-profile",
+  "format_version": 1,
+  "id": "synthetic-studio",
+  "rev": 2,
+  "language": "en-GB",
+  "units": { "length": "mm", "angle": "deg" },
+  "studio": { "fitter": "Test Fitter", "name": "Test Studio", "colours": { "primary": "#123456" } },
+  "definitions": { "saddle_ref": { "preset": "width_point", "width_mm": 80 } },
+  "fields": [
+    {
+      "key": "seat_tilt",
+      "label": "saddle tilt",
+      "group": "angle",
+      "type": "number",
+      "unit": "deg",
+      "decimals": 1,
+      "range": [-5, 15],
+      "sign": { "+": "nose down", "-": "nose up" },
+      "std": "saddle.tilt"
+    },
+    {
+      "key": "seat_height",
+      "label": "saddle height",
+      "group": "position",
+      "type": "number",
+      "unit": "mm",
+      "range": [600, 1000],
+      "geometry": { "from": "bb", "to": "saddle_ref", "measure": "straight" },
+      "method": "BB axle to the saddle reference point"
+    },
+    {
+      "key": "setback",
+      "label": "saddle setback",
+      "group": "position",
+      "type": "number",
+      "unit": "mm",
+      "range": [100, 320],
+      "geometry": { "from": "bb", "to": "saddle_ref", "measure": "horizontal" }
+    },
+    {
+      "key": "drop",
+      "label": "drop to top edge of bar",
+      "group": "position",
+      "type": "number",
+      "unit": "mm",
+      "range": [-150, 250],
+      "geometry": { "from": "saddle_ref", "to": "bar_top_at_stem", "measure": "vertical" }
+    },
+    {
+      "key": "pedals",
+      "label": "pedals",
+      "group": "shoes",
+      "type": "choice",
+      "options": [
+        { "id": "platform", "label": "platform" },
+        { "id": "clipless", "label": "clipless" }
+      ]
+    },
+    {
+      "key": "cleat_r",
+      "label": "first metatarsal head vs pedal axle, right",
+      "group": "shoes",
+      "type": "number",
+      "unit": "mm",
+      "range": [-20, 25],
+      "sign": { "+": "joint ahead of the axle", "-": "joint behind the axle" },
+      "std": "shoe.mtp1_vs_axle.right",
+      "show_if": { "key": "pedals", "op": "ne", "value": "platform" }
+    },
+    { "key": "studio_note", "label": "studio note", "group": "other", "type": "text" }
+  ],
+  "bike_types": {
+    "road": {
+      "label": "Road",
+      "templates": {
+        "before": [
+          { "key": "seat_tilt", "required": true },
+          { "key": "seat_height", "required": true }
+        ],
+        "after": [
+          { "key": "seat_tilt", "required": true },
+          { "key": "seat_height", "required": true },
+          { "key": "setback", "required": true },
+          { "key": "drop", "required": true },
+          { "key": "cleat_r", "required": false }
+        ]
+      },
+      "key_outputs": ["seat_height", "setback", "drop"]
+    },
+    "gravel": { "extends": "road", "label": "Gravel" }
+  },
+  "texts": { "sign_off": "See you on the road." },
+  "pages": ["cover", "summary", "setup"]
+}
