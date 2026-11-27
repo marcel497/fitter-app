@@ -1,0 +1,77 @@
+{
+  "schema": 1,
+  "meta": {
+    "client": "Sample Rider",
+    "folder_name": "2026-11-12_Sample_Rider_Road",
+    "salutation": "vy",
+    "gender": "m",
+    "date": "2026-11-12",
+    "type": "road",
+    "visit": "first",
+    "bike": {
+      "model": "Example Endurance 2x11",
+      "year": 2025,
+      "size": "56",
+      "url": "https://example.com/bike",
+      "geometry": { "stack": 580, "reach": 385, "hta": 72.5, "sta": 73.5, "bb_drop": 72 }
+    },
+    "drive": { "client_folder_id": "synthetic-folder-id" }
+  },
+  "old": {
+    "seat_tilt": { "v": 2, "s": "ok", "src": "dictated", "note": "" },
+    "seat_tilt_dir": { "v": "nahoru", "s": "ok", "src": "dictated" },
+    "bar_angle": { "v": 9, "s": "ok", "src": "dictated" },
+    "hood_angle": { "v": 7, "s": "ok", "src": "dictated" },
+    "seat_height": { "v": 862, "s": "ok", "src": "dictated" },
+    "setback": { "v": 205, "s": "ok", "src": "dictated" },
+    "reach_hoods": { "v": 838, "s": "ok", "src": "dictated" },
+    "drop": { "v": 118, "s": "ok", "src": "dictated" },
+    "drop_hoods": { "v": 64, "s": "ok", "src": "dictated" },
+    "cleat_r": { "v": 6, "s": "ok", "src": "transcript" },
+    "cleat_r_dir": { "v": "za", "s": "ok", "src": "transcript" },
+    "cleat_l": { "v": 4, "s": "ok", "src": "transcript" },
+    "cleat_l_dir": { "v": "ahead", "s": "ok", "src": "transcript" },
+    "cockpit_type": { "v": "klasický", "s": "ok", "src": "db" },
+    "stem_length": { "v": 100, "s": "ok", "src": "db" }
+  },
+  "new": {
+    "seat_tilt": { "v": 1.5, "s": "ok", "src": "dictated" },
+    "bar_angle": { "v": 8, "s": "ok", "src": "dictated" },
+    "hood_angle": { "v": 10, "s": "ok", "src": "dictated" },
+    "seat_height": { "v": 851, "s": "ok", "src": "dictated", "t": "10:48" },
+    "setback_center": { "v": 214, "s": "ok", "src": "dictated" },
+    "setback_tip": { "v": 62, "s": "ok", "src": "dictated" },
+    "reach": { "v": 548, "s": "ok", "src": "dictated" },
+    "reach_hoods": { "v": 812, "s": "ok", "src": "dictated" },
+    "hood_width": { "v": 380, "s": "ok", "src": "dictated" },
+    "drop": { "v": 96, "s": "ok", "src": "dictated" },
+    "drop_hoods": { "v": 42, "s": "unclear", "src": "dictated", "note": "40 on the recording" },
+    "cleat_r": { "v": 8, "s": "ok", "src": "transcript" },
+    "cleat_r_dir": { "v": "behind", "s": "ok", "src": "transcript" },
+    "cleat_l": { "v": 8, "s": "ok", "src": "transcript" },
+    "heel_wedges": { "v": "pravá bota 2, levá bota 1", "s": "ok", "src": "transcript" },
+    "cockpit_type": { "v": "klasický", "s": "ok", "src": "db" },
+    "stem_length": { "v": 90, "s": "ok", "src": "marcel" },
+    "bar_width": { "v": 400, "s": "ok", "src": "photo" },
+    "pedals": { "v": "Shimano SPD-SL", "s": "ok", "src": "transcript" },
+    "saddle": { "v": "Example Saddle Pro 143", "s": "ok", "src": "transcript" }
+  },
+  "links": [
+    {
+      "label": "Hip mobility routine",
+      "url": "https://example.com/video",
+      "cat": "exercise",
+      "src": "default",
+      "s": "ok"
+    }
+  ],
+  "summary": {
+    "intro": "Synthetic summary for tests.",
+    "changes": ["Saddle 11 mm lower and 9 mm further back"],
+    "recommendations": [{ "title": "Ride easy for two weeks", "text": "Synthetic text." }]
+  },
+  "drawing": { "pdf": "drawing.pdf", "extra": ["drawing_2.pdf"], "crop": [0, 0, 100, 100] },
+  "transcript": { "parts": [] },
+  "db_inbox": [],
+  "log": [{ "t": "10:21", "src": "dictated", "text": "old positions 862 205 838 118" }]
+}

@@ -1,0 +1,499 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://fitter.sedimi.bike/schema/profile-1.json",
+  "title": "Sedimi Fitter profile, format version 1",
+  "description": "What one fitter measures and how their report looks. See docs/SPEC.md, 'Fitter profile format'. Unknown keys are allowed and must be kept on save.",
+  "type": "object",
+  "required": [
+    "format",
+    "format_version",
+    "id",
+    "rev",
+    "language",
+    "units",
+    "definitions",
+    "fields",
+    "bike_types"
+  ],
+  "properties": {
+    "format": {
+      "const": "fitter-profile"
+    },
+    "format_version": {
+      "const": 1
+    },
+    "id": {
+      "$ref": "#/$defs/id"
+    },
+    "rev": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "language": {
+      "$ref": "#/$defs/language"
+    },
+    "units": {
+      "$ref": "#/$defs/units"
+    },
+    "studio": {
+      "$ref": "#/$defs/studio"
+    },
+    "definitions": {
+      "$ref": "#/$defs/definitions"
+    },
+    "fields": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/field"
+      }
+    },
+    "bike_types": {
+      "type": "object",
+      "minProperties": 1,
+      "propertyNames": {
+        "$ref": "#/$defs/id"
+      },
+      "additionalProperties": {
+        "$ref": "#/$defs/bikeType"
+      }
+    },
+    "dictation": {
+      "type": "object"
+    },
+    "texts": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string"
+      }
+    },
+    "pages": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9_-]*$",
+      "description": "Lower-case id: letters, digits, underscore, hyphen."
+    },
+    "language": {
+      "type": "string",
+      "pattern": "^[A-Za-z]{2,3}(-[A-Za-z0-9]{2,8})*$",
+      "description": "BCP 47 language tag, e.g. en-GB."
+    },
+    "landmark": {
+      "enum": [
+        "bb",
+        "saddle_ref",
+        "saddle_tip",
+        "saddle_rail_centre",
+        "bar_centre_at_stem",
+        "bar_top_at_stem",
+        "bar_front_at_stem",
+        "bar_point",
+        "hood_end",
+        "grip_mid"
+      ],
+      "description": "Side-view landmark, defined in docs/interop/README.md."
+    },
+    "scalar": {
+      "type": ["number", "string", "boolean", "null"]
+    },
+    "units": {
+      "type": "object",
+      "required": ["length", "angle"],
+      "properties": {
+        "length": {
+          "enum": ["mm", "in"]
+        },
+        "angle": {
+          "const": "deg"
+        }
+      }
+    },
+    "colour": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$"
+    },
+    "studio": {
+      "type": "object",
+      "properties": {
+        "fitter": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "town": {
+          "type": "string"
+        },
+        "website": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "phone": {
+          "type": "string"
+        },
+        "logo": {
+          "type": "string",
+          "description": "Embedded image as a data: URL."
+        },
+        "colours": {
+          "type": "object",
+          "properties": {
+            "primary": {
+              "$ref": "#/$defs/colour"
+            },
+            "accent": {
+              "$ref": "#/$defs/colour"
+            },
+            "accent2": {
+              "$ref": "#/$defs/colour"
+            }
+          }
+        },
+        "font": {
+          "type": "string"
+        },
+        "design": {
+          "type": "string"
+        }
+      }
+    },
+    "saddleRef": {
+      "type": "object",
+      "required": ["preset"],
+      "properties": {
+        "preset": {
+          "enum": ["width_point", "midpoint", "rail_centre", "nose_offset", "custom"]
+        },
+        "width_mm": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 200
+        },
+        "nose_offset_mm": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 300
+        },
+        "text": {
+          "type": "string"
+        },
+        "sketch": {
+          "type": "string"
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "preset": {
+                "const": "width_point"
+              }
+            }
+          },
+          "then": {
+            "required": ["width_mm"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "preset": {
+                "const": "nose_offset"
+              }
+            }
+          },
+          "then": {
+            "required": ["nose_offset_mm"]
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "preset": {
+                "const": "custom"
+              }
+            }
+          },
+          "then": {
+            "required": ["text"]
+          }
+        }
+      ]
+    },
+    "definitions": {
+      "type": "object",
+      "required": ["saddle_ref"],
+      "properties": {
+        "saddle_ref": {
+          "$ref": "#/$defs/saddleRef"
+        }
+      }
+    },
+    "geometry": {
+      "type": "object",
+      "required": ["from", "to", "measure"],
+      "properties": {
+        "from": {
+          "$ref": "#/$defs/landmark"
+        },
+        "to": {
+          "$ref": "#/$defs/landmark"
+        },
+        "measure": {
+          "enum": ["straight", "horizontal", "vertical"]
+        }
+      }
+    },
+    "showIf": {
+      "type": "object",
+      "required": ["key", "op"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "op": {
+          "enum": ["eq", "ne", "in", "not_in", "set", "unset"]
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "enum": ["eq", "ne"]
+              }
+            }
+          },
+          "then": {
+            "required": ["value"],
+            "properties": {
+              "value": {
+                "$ref": "#/$defs/scalar"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "op": {
+                "enum": ["in", "not_in"]
+              }
+            }
+          },
+          "then": {
+            "required": ["value"],
+            "properties": {
+              "value": {
+                "type": "array",
+                "items": {
+                  "$ref": "#/$defs/scalar"
+                }
+              }
+            }
+          }
+        }
+      ]
+    },
+    "field": {
+      "type": "object",
+      "required": ["key", "label", "group", "type"],
+      "properties": {
+        "key": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1
+        },
+        "group": {
+          "enum": ["position", "angle", "component", "shoes", "other"]
+        },
+        "type": {
+          "enum": ["number", "text", "choice", "bool"]
+        },
+        "unit": {
+          "enum": ["mm", "deg", ""]
+        },
+        "decimals": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 3
+        },
+        "range": {
+          "type": "array",
+          "prefixItems": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "number"
+            }
+          ],
+          "minItems": 2,
+          "maxItems": 2
+        },
+        "sign": {
+          "type": "object",
+          "required": ["+", "-"],
+          "properties": {
+            "+": {
+              "type": "string"
+            },
+            "-": {
+              "type": "string"
+            }
+          }
+        },
+        "method": {
+          "type": "string"
+        },
+        "options": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["id", "label"],
+            "properties": {
+              "id": {
+                "type": "string",
+                "minLength": 1
+              },
+              "label": {
+                "type": "string",
+                "minLength": 1
+              }
+            }
+          }
+        },
+        "show_if": {
+          "$ref": "#/$defs/showIf"
+        },
+        "default": {
+          "$ref": "#/$defs/scalar"
+        },
+        "geometry": {
+          "$ref": "#/$defs/geometry"
+        },
+        "std": {
+          "type": "string",
+          "pattern": "^[a-z0-9_]+(\\.[a-z0-9_]+)+$",
+          "description": "Standard meaning id from the built-in list, e.g. saddle.tilt."
+        }
+      },
+      "allOf": [
+        {
+          "if": {
+            "required": ["geometry"]
+          },
+          "then": {
+            "properties": {
+              "group": {
+                "const": "position"
+              },
+              "unit": {
+                "const": "mm"
+              }
+            }
+          }
+        },
+        {
+          "if": {
+            "properties": {
+              "type": {
+                "const": "choice"
+              }
+            }
+          },
+          "then": {
+            "required": ["options"]
+          }
+        }
+      ]
+    },
+    "templateEntry": {
+      "type": "object",
+      "required": ["key", "required"],
+      "properties": {
+        "key": {
+          "type": "string",
+          "minLength": 1
+        },
+        "required": {
+          "type": "boolean"
+        }
+      }
+    },
+    "bikeType": {
+      "type": "object",
+      "properties": {
+        "extends": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "type": "string"
+        },
+        "templates": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1
+          },
+          "additionalProperties": {
+            "type": "array",
+            "items": {
+              "$ref": "#/$defs/templateEntry"
+            }
+          }
+        },
+        "key_outputs": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 4
+        },
+        "illustrations": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "description": "The part of a profile a fit carries (fit.profile.snapshot).",
+      "required": ["definitions", "fields", "bike_type", "units", "language"],
+      "properties": {
+        "definitions": {
+          "$ref": "#/$defs/definitions"
+        },
+        "fields": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/field"
+          }
+        },
+        "bike_type": {
+          "$ref": "#/$defs/bikeType"
+        },
+        "units": {
+          "$ref": "#/$defs/units"
+        },
+        "language": {
+          "$ref": "#/$defs/language"
+        }
+      }
+    }
+  }
+}
